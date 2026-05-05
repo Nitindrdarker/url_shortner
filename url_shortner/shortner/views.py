@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import redirect
 
+from shortner.services.rate_limiter import is_rate_limited
+from rest_framework import status
 from .services.cache_services import  set_original_url, get_original_url
 from .models import URL
 from .serializers import URLSerializer
@@ -10,6 +12,11 @@ from .services.base62 import encode
 
 @api_view(['POST'])
 def create_short_url_view(request):
+    ip = request.META.get("REMOTE_ADDR")
+    print(f"===============ip adderess:{ip}")
+    
+    if is_rate_limited(ip):
+        return Response({"message":"Too many requests"}, status=status.HTTP_429_TOO_MANY_REQUESTS)
     serializer = URLSerializer(data=request.data)
     
     if serializer.is_valid():
