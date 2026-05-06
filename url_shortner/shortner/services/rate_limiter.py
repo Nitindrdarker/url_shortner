@@ -2,7 +2,7 @@ from django.core.cache import cache
 import time
 
 RATE_LIMIT = 2 #requests
-WINDOW = 60 #seconds
+WINDOW = 10 #seconds
 
 
 

@@ -9,6 +9,8 @@ from .services.cache_services import  set_original_url, get_original_url
 from .models import URL
 from .serializers import URLSerializer
 from .services.base62 import encode
+from .tasks import log_click
+from celery import current_app
 
 @api_view(['POST'])
 def create_short_url_view(request):
@@ -38,9 +40,11 @@ def redirect_url(request, code):
 
     #try cache
     cache_url = get_original_url(short_code=code)
-
+    ip = request.META.get('REMOTE_ADDR')
     if cache_url:
         print("========================cache hit, inside cache==================")
+        print("BROKER URL:", current_app.conf.broker_url)
+        log_click.delay(code, ip)
         return redirect(cache_url)
 
     try:
@@ -49,7 +53,7 @@ def redirect_url(request, code):
 
         #store in cache
         set_original_url(code, url.original_url)
-
+        log_click.delay(code, ip)
         return redirect(url.original_url)
     except URL.DoesNotExist:
         print("====================errro=================")

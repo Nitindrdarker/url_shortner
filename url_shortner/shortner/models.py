@@ -8,3 +8,10 @@ class URL(models.Model):
 
     def __str__(self):
         return self.short_code
+    
+
+
+class ClickEvent(models.Model):
+    url = models.ForeignKey(URL, on_delete=models.CASCADE)
+    clicked_at = models.DateTimeField(auto_now_add=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
