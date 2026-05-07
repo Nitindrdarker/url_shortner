@@ -11,6 +11,7 @@ from .serializers import URLSerializer
 from .services.base62 import encode
 from .tasks import log_click
 from celery import current_app
+import uuid
 
 @api_view(['POST'])
 def create_short_url_view(request):
@@ -43,8 +44,8 @@ def redirect_url(request, code):
     ip = request.META.get('REMOTE_ADDR')
     if cache_url:
         print("========================cache hit, inside cache==================")
-        print("BROKER URL:", current_app.conf.broker_url)
-        log_click.delay(code, ip)
+        request_id = str(uuid.uuid4())
+        log_click.delay(code, ip, request_id)
         return redirect(cache_url)
 
     try:
@@ -53,7 +54,8 @@ def redirect_url(request, code):
 
         #store in cache
         set_original_url(code, url.original_url)
-        log_click.delay(code, ip)
+        request_id = str(uuid.uuid4())
+        log_click.delay(code, ip, request_id)
         return redirect(url.original_url)
     except URL.DoesNotExist:
         print("====================errro=================")

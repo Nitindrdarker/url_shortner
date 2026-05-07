@@ -15,3 +15,7 @@ class ClickEvent(models.Model):
     url = models.ForeignKey(URL, on_delete=models.CASCADE)
     clicked_at = models.DateTimeField(auto_now_add=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
+    request_id = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.request_id
