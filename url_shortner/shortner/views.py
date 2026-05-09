@@ -12,6 +12,8 @@ from .services.base62 import encode
 from .tasks import log_click
 from celery import current_app
 import uuid
+from django.db.models import Count
+from .serializers import URLAnalyticsSerializer
 
 @api_view(['POST'])
 def create_short_url_view(request):
@@ -60,3 +62,29 @@ def redirect_url(request, code):
     except URL.DoesNotExist:
         print("====================errro=================")
         return JsonResponse({"error": "Not found"}, status=404)
+    
+
+
+
+@api_view(["GET"])
+def url_analytics(request, code):
+    try:
+        url = URL.objects.annotate(
+            total_clicks = Count("clickevent") # this is in serilizer, not in model
+        ).get(short_code=code)
+        serializer = URLAnalyticsSerializer(url)
+        return Response(serializer.data)
+    except URL.DoesNotExist:
+        return Response({"error":"Url not found"}, status=404)
+
+
+
+@api_view(['GET'])
+def top_urls(request):
+    urls = URL.objects.annotate(
+        total_clicks=Count('clickevent')
+    ).order_by('-total_clicks')[:10]
+
+    serializer = URLAnalyticsSerializer(urls, many=True)
+
+    return Response(serializer.data)

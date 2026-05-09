@@ -16,3 +16,15 @@ class URLSerializer(serializers.Serializer):
 
         # Create without short_code (your view handles it)
         return URL.objects.create(**validated_data)
+    
+
+class URLAnalyticsSerializer(serializers.Serializer):
+    total_clicks = serializers.IntegerField()
+    class Meta:
+        model = URL
+        fields = [
+            "original_url",
+            "short_code",
+            "created_at",
+            "total_clicks",
+        ]
