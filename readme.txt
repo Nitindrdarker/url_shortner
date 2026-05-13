@@ -4,7 +4,7 @@ A production-style URL shortener backend built using Django, Redis, Celery, Post
 
 This project focuses on real backend engineering concepts such as:
 
-⚡ Caching
+ ⚡ Caching
 🔄 Asynchronous task processing
 🛡️ Rate limiting
 📊 Analytics
@@ -22,6 +22,7 @@ This project focuses on real backend engineering concepts such as:
 ♻️ Retry mechanism with exponential backoff
 🐳 Dockerized infrastructure
 ☁️ Cloud deployment ready
+
 🏗️ Tech Stack
 Backend
 Django
