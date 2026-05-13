@@ -11,6 +11,7 @@ This project focuses on real backend engineering concepts such as:
 ♻️ Retry mechanisms
 ✅ Idempotency
 🐳 Containerized deployment
+
 ✨ Features
 🔗 URL shortening using Base62 encoding
 ⚡ Fast redirection system
