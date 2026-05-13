@@ -40,6 +40,7 @@ Deployment
 Railway
 Supabase PostgreSQL
 Upstash Redis
+
 🧠 System Architecture
                 ┌─────────────┐
                 │   Client    │
@@ -60,6 +61,7 @@ Upstash Redis
             ┌────────────────────────┐
             │     PostgreSQL DB      │
             └────────────────────────┘
+
 📡 API Endpoints
 🔗 Create Short URL
 POST /api/shorten/
@@ -83,7 +85,6 @@ Redirects the user to the original URL.
 GET /api/analytics/<short_code>/
 
 Returns:
-
 Total clicks
 Original URL
 Creation date
@@ -94,7 +95,6 @@ Returns the top most-clicked URLs.
 
 ⚙️ Engineering Concepts Implemented
 ⚡ Redis Caching
-
 Implemented read-through caching to reduce database load and improve redirect performance.
 
 Flow
@@ -109,16 +109,15 @@ Benefits
 Faster redirects
 Reduced DB pressure
 Improved scalability
+
 🛡️ Rate Limiting
-
 Implemented IP-based rate limiting using Redis counters and TTL expiration.
-
 Prevents
 Abuse
 Bot traffic
 Excessive API usage
-🔄 Asynchronous Processing
 
+🔄 Asynchronous Processing
 Used Celery with Redis to offload analytics processing from the Django request cycle.
 
 Why?
