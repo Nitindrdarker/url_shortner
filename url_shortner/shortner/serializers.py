@@ -18,7 +18,7 @@ class URLSerializer(serializers.Serializer):
         return URL.objects.create(**validated_data)
     
 
-class URLAnalyticsSerializer(serializers.Serializer):
+class URLAnalyticsSerializer(serializers.ModelSerializer):
     total_clicks = serializers.IntegerField()
     class Meta:
         model = URL
